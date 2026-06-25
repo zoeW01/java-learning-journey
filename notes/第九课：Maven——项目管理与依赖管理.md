@@ -202,6 +202,7 @@ Maven 项目有固定的目录结构，你必须遵守：
 Java 源代码必须放在 `src/main/java/` 下。创建对应的目录并把你之前写的 `JdbcDemo.java` 文件放到正确位置。
 
 **第四步：exec-maven-plugin 配置与运行**
+
 ```bash
 mvn clean compile
 mvn exec:java -Dexec.mainClass="JdbcDemo"
