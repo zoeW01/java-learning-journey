@@ -4,8 +4,8 @@
 ```java
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.ResultSet;
 
 public class JdbcDemo {
     public static void main(String[] args) {
@@ -82,8 +82,8 @@ public class JdbcDemo {
 ```java
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.ResultSet;
 ```
 
 **为什么写这个？**
@@ -380,3 +380,69 @@ finally {
 5. 无论事情办没办成，最后一定要在finally里扔掉话筒（stmt.close()），挂断电话（conn.close()）。
 
 ---
+你没有漏学。PreparedStatement 和 Statement 的区别、`?` 占位符、`executeUpdate()` 的使用场景，是我之前用 JDBC 教学时没有展开讲的——我当时只给了你 Statement 版本的代码让你跑通，没有解释这两种执行方式各自的适用场景和底层原理。这是我的教学错误，让你在综合项目中碰到了知识断层。现在补上。
+
+---
+
+## Statement 和 PreparedStatement ——为什么必须用后者
+
+`Statement` 的**致命问题：SQL 注入。**
+
+---
+
+### PreparedStatement 的解决原理
+
+`PreparedStatement` 把 SQL 语句的**结构**和**数据**分离开。
+
+**工作流程：**
+
+1. 你先把 SQL 结构发给数据库，用 `?` 占位符表示"这里以后会填值，但现在不知道"。数据库立即解析这段 SQL 结构，生成一个预编译的执行计划，缓存起来。
+2. 你再逐个告诉数据库"第 1 个 `?` 的值是 XXX，第 2 个 `?` 的值是 YYY"。
+3. 数据库把值填入已经编译好的执行计划，直接执行。
+
+**关键在于：** 你在第 2 步填入的任何值，都只被当作"数据本身"，不会被当作 SQL 语句的一部分来解析。即使你填入 `DROP TABLE student`，数据库也只会把这串字当成一个姓名存进表里，不会当成 SQL 命令执行。SQL 注入从根本上被消灭了。
+
+### `?` 占位符和 `setXxx()` 方法
+
+SQL 模板中的 `?` 是占位符，从 1 开始编号（不是从 0）。
+
+```java
+String sql = "INSERT INTO student (name, age) VALUES (?     ,     ?)";
+//                                             第一个? ↑    第二个? ↑
+PreparedStatement pstmt = conn.prepareStatement(sql);
+pstmt.setString(1, name);   // 给第1个?赋值，类型是String
+pstmt.setInt(2, age);        // 给第2个?赋值，类型是int
+```
+
+`setXxx(位置, 值)` 方法根据 Java 类型选择对应的 set 方法。常用的：
+
+| Java 类型 | 用哪个 set 方法 |
+|-----------|----------------|
+| String | `setString(pos, val)` |
+| int | `setInt(pos, val)` |
+| double | `setDouble(pos, val)` |
+| LocalDate | `setObject(pos, val)` 或转成 `java.sql.Date` |
+
+数据库收到 `setString(1, "Zoe")` 后，知道第一个 `?` 的值是字符串 "Zoe"，自动加引号。收到 `setInt(2, 22)` 后，知道第二个 `?` 的值是整数 22，不加引号。你不用手动处理类型格式，PreparedStatement 自动做类型映射。
+
+---
+
+### `executeUpdate()` vs `executeQuery()`
+
+| 方法 | 用于 | 返回 |
+|------|------|------|
+| `executeQuery()` | SELECT 查询 | ResultSet（结果集） |
+| `executeUpdate()` | INSERT、UPDATE、DELETE、CREATE TABLE | int（受影响的行数） |
+
+---
+
+### `PreparedStatement` 关闭连接
+
+连接和 PreparedStatement 都是系统资源。不关闭会导致连接泄漏——MySQL 同时能打开的连接数有上限，泄漏积累到上限后数据库拒绝新连接，整个系统不可用。
+
+关闭顺序和打开顺序相反：先关 PreparedStatement，再关 Connection。先判空再关闭
+
+`!= null` 判断是防御性的——如果连接建立之前就抛了异常，`conn` 还是 null，直接调 `conn.close()` 会抛出 `NullPointerException`。
+
+---
+
