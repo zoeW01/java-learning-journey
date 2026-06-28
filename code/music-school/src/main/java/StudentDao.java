@@ -37,6 +37,55 @@ public class StudentDao{
 		return id;
 	}
 
+	public static int deleteByStudentId(int studentId) throws SQLException {
+		Connection conn = null;
+		PreparedStatement pstmt1 = null;
+		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
+		ResultSet rs = null;
+
+		String sql1 = "SELECT * FROM payment WHERE student_id = ?;";
+		String sql2 = "DELETE FROM payment WHERE student_id = ?;";
+		String sql3 = "DELETE FROM student WHERE id = ?;";
+		int count = 0;
+
+		try{
+			conn = DBUtil.getConnection();
+			pstmt1 = conn.prepareStatement(sql1);
+			pstmt1.setInt(1,studentId);
+			rs = pstmt1.executeQuery();
+
+			if(rs.next()){
+				pstmt2 = conn.prepareStatement(sql2);
+				pstmt2.setInt(1,studentId);
+				count = pstmt2.executeUpdate();
+			}
+
+			pstmt3 = conn.prepareStatement(sql3);
+			pstmt3.setInt(1,studentId);
+			count = pstmt3.executeUpdate();
+
+		}catch(SQLException e){
+			throw new SQLException("删除学员失败",e);
+		}finally{
+			DBUtil.close(conn,pstmt1,rs);
+
+			try{
+				pstmt2.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+
+			try{
+				pstmt3.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
+
+		return count;
+	}
+
 	public static List<Student> getAllStudents() throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
