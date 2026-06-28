@@ -2,3 +2,5 @@ Main.class
 DBUtil.class
 Student.class
 StudentDao.class
+PaymentDao.class
+Payment.class

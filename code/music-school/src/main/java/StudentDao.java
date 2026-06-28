@@ -7,46 +7,37 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 
 public class StudentDao{
-	public int addStudent(Student s) throws SQLException{
+	public static int addStudent(Student s) throws SQLException{
 		String sql = "INSERT INTO student (name,age,phone,enrollment_date,instrument) VALUES (?,?,?,?,?);";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		int count = 0;
+		ResultSet rs = null;
+		int id = 0;
 
 		try{
 			conn = DBUtil.getConnection();
-			pstmt = conn.prepareStatement(sql);
+			pstmt = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
 
 			pstmt.setString(1,s.getName());
 			pstmt.setInt(2,s.getAge());
 			pstmt.setString(3,s.getPhone());
 			pstmt.setObject(4,s.getEnrollmentDate());
-
 			pstmt.setString(5,s.getInstrument());
-			count = pstmt.executeUpdate();
-		}catch(SQLException e){
-			throw new SQLException("添加学员失败",e);
-		}finally{
-			if(pstmt != null){
-				try{
-					pstmt.close();
-				}catch(SQLException e){
-					e.printStackTrace();
-				}
-			}
 
-			if(conn != null){
-				try{
-					conn.close();
-				}catch(SQLException e){
-					e.printStackTrace();
-				}
-			}
+			pstmt.executeUpdate();
+
+			rs = pstmt.getGeneratedKeys();
+			if(rs.next()){id = rs.getInt(1);}
+
+		}catch(SQLException e){
+			throw new SQLException("添加学员失败，未获取到ID",e);
+		}finally{
+			DBUtil.close(conn,pstmt,rs);
 		}
-		return count;
+		return id;
 	}
 
-	public List<Student> getAllStudents() throws SQLException {
+	public static List<Student> getAllStudents() throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -66,34 +57,12 @@ public class StudentDao{
 		}catch(SQLException e){
 			throw new SQLException("查询所有学员失败", e);
 		}finally{
-			if(rs != null){
-				try{
-					rs.close();
-				}catch(SQLException e){
-					e.printStackTrace();
-				}
-			}
-
-			if(pstmt != null){
-				try{
-					pstmt.close();
-				}catch(SQLException e){
-					e.printStackTrace();
-				}
-			}
-
-			if(conn != null){
-				try{
-					conn.close();
-				}catch(SQLException e){
-					e.printStackTrace();
-				}
-			}
+			DBUtil.close(conn,pstmt,rs);
 		}
 		return students;
 	}
 
-	public List<Student> getStudentByInstrument(String instrument) throws SQLException {
+	public static List<Student> getStudentByInstrument(String instrument) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -116,34 +85,12 @@ public class StudentDao{
 		}catch(SQLException e){
 			throw new SQLException("查询学员失败" ,e);
 		}finally{
-			if(rs != null){
-				try{
-					rs.close();
-				}catch(SQLException e){
-					e.printStackTrace();
-				}
-			}
-
-			if(pstmt != null){
-				try{
-					pstmt.close();
-				}catch(SQLException e){
-					e.printStackTrace();
-				}
-			}
-
-			if(conn != null){
-				try{
-					conn.close();
-				}catch(SQLException e){
-					e.printStackTrace();
-				}
-			}
+			DBUtil.close(conn,pstmt,rs);
 		}
 		return students;
 	}
 
-	private Student buildStudent(ResultSet rs) throws SQLException{
+	private static Student buildStudent(ResultSet rs) throws SQLException{
 		Student s = new Student(rs.getString("name"),rs.getInt("age"),rs.getString("phone"),rs.getObject("enrollment_date",LocalDate.class),rs.getString("instrument"));
 		s.setId(rs.getInt("id"));
 		return s;
