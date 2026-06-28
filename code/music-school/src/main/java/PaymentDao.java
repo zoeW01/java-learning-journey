@@ -17,7 +17,7 @@ public class PaymentDao{
 
 		try{
 			conn = DBUtil.getConnection();
-			pstmt = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setInt(1,payment.getStudentId());
 			pstmt.setObject(2,payment.getAmount());

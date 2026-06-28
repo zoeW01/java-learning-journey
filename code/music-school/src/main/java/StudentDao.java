@@ -51,6 +51,7 @@ public class StudentDao{
 
 		try{
 			conn = DBUtil.getConnection();
+			conn.setAutoCommit(false);
 			pstmt1 = conn.prepareStatement(sql1);
 			pstmt1.setInt(1,studentId);
 			rs = pstmt1.executeQuery();
@@ -64,23 +65,20 @@ public class StudentDao{
 			pstmt3 = conn.prepareStatement(sql3);
 			pstmt3.setInt(1,studentId);
 			count = pstmt3.executeUpdate();
+			conn.commit();
 
 		}catch(SQLException e){
+			if(conn != null){
+				try{
+					conn.rollback();
+				}catch(SQLException ex){
+					ex.printStackTrace();
+				}
+			}
+
 			throw new SQLException("删除学员失败",e);
 		}finally{
-			DBUtil.close(conn,pstmt1,rs);
-
-			try{
-				pstmt2.close();
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-
-			try{
-				pstmt3.close();
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
+			DBUtil.close(conn,rs,pstmt1,pstmt2,pstmt3);
 		}
 
 		return count;

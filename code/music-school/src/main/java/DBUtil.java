@@ -16,6 +16,10 @@ public class DBUtil{
 	}
 
 	public static void close(Connection conn,PreparedStatement pstmt,ResultSet rs){
+		close(conn,rs,pstmt);
+	}
+
+	public static void close(Connection conn,ResultSet rs,PreparedStatement ... pstmt){
 		if(rs != null){
 			try{
 				rs.close();
@@ -24,11 +28,13 @@ public class DBUtil{
 			}
 		}
 
-		if(pstmt != null){
-			try{
-				pstmt.close();
-			}catch(SQLException e){
-				e.printStackTrace();
+		for(PreparedStatement p : pstmt){
+			if(p != null){
+				try{
+					p.close();
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
 			}
 		}
 
