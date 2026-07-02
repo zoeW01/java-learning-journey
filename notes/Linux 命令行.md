@@ -62,3 +62,44 @@ Linux 没有 C 盘 D 盘。所有文件和目录挂在一棵从 `/` 开始的树
 - **`~`**：当前用户的主目录，等同于 `/home/zoe`
 - **`.`**：当前目录
 - **`..`**：上一级目录
+
+### 5.同步
+
+---
+```bash
+# 1. 进入仓库根目录
+cd ~/git-repos/public-learning
+
+# 2. 删除旧文件
+rm -rf code/...  或者 note/...
+
+# 3.同步笔记（从 Obsidian Vault 复制）
+#    
+mkdir -p note/...
+cp ~/java-projects/.../*.md 
+	note/.../
+
+# 4. 同步代码（BigInteger/BigDecimal 练习）
+mkdir -p code/...
+cp ~/java-projects/.../*.java
+	code/...
+
+# 如果还有其他新增或修改的 .java 文件，一并复制
+
+# 5. 查看变更，确认所有文件都正确
+git status
+
+# 6. 暂存、提交、推送
+git add notes/ code/
+git commit -m ""
+git push origin main
+```
+---
+```bash
+
+
+
+git add code/06-common-classes/
+git commit -m "同步06-common-classes所有练习代码"
+git push origin main
+```
