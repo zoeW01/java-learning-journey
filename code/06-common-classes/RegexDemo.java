@@ -33,11 +33,20 @@ public class RegexDemo{
 		return id.matches("\\d{17}[\\dxX]");
 	}
 
+	public static boolean id(String id,boolean b){
+		if(b) return id(id);
+		return id.matches("[1-9]\\d{5}(20|1[89])\\d{2}(0[1-9]|1[0-2])(0[1-9]|[1-2]\\d|3[01])\\d{3}(\\d|(?i)x)");
+	}
+
 	public static boolean email(String email){
 		return email.matches("(\\w+)@([0-9a-zA-Z]+)\\.([a-zA-Z]{2,6})");
 	}
 
 	public static boolean date(String date){
 		return date.matches("\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])");
+	}
+
+	public static boolean userName(String username){
+		return username.matches("\\w{4,16}");
 	}
 }
