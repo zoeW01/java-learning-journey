@@ -68,7 +68,7 @@ Linux 没有 C 盘 D 盘。所有文件和目录挂在一棵从 `/` 开始的树
 ---
 ```bash
 # 1. 进入仓库根目录
-cd ~/git-repos/public-learning
+
 
 # 2. 删除旧文件
 rm -rf code/...  或者 note/...
@@ -95,11 +95,3 @@ git commit -m ""
 git push origin main
 ```
 ---
-```bash
-
-
-
-git add code/06-common-classes/
-git commit -m "同步06-common-classes所有练习代码"
-git push origin main
-```

@@ -1,6 +1,6 @@
 # String
 
-`String` 是你从第一课就在用的类型，但它背后有一个必须知道的事实：**String 是不可变的**——每次对字符串做操作，都是创建了一个新字符串，原字符串不变。
+**String 不可变**——每次对字符串做操作，都是创建了一个新字符串，原字符串不变。
 
 ---
 
@@ -56,21 +56,29 @@ public class StringDemo {
 
 ## 常用方法清单
 
-| 方法                       | 作用                 |
-| ------------------------ | ------------------ |
-| `length()`               | 获取长度               |
-| `trim()`                 | 去掉首尾空格             |
-| `toUpperCase()`          | 转大写                |
-| `toLowerCase()`          | 转小写                |
-| `contains(s)`            | 是否包含子串             |
-| `startsWith(String s)`   | 以某串开头              |
-| `endsWith(String s)`     | 以某串结尾              |
-| `replace(char a,char b)` | 用b替换所有a            |
-| `substring(int i)`       | 截取i到结尾             |
-| `substring(int i,int j)` | 截取 [i, j-1]        |
-| `split(分隔符)`             | 按分隔符切开，返回切开后的字符串数组 |
-| `charAt(i)`              | 获取索引 i 的字符         |
-| `toCharArray()`          | 字符串转换为字符数组         |
+| 返回值       | 方法                                     | 作用                                       |
+| --------- | -------------------------------------- | ---------------------------------------- |
+|           | `length()`                             | 获取长度                                     |
+|           | `trim()`                               | 去掉首尾空格                                   |
+|           | `toUpperCase()`                        | 转大写                                      |
+|           | `toLowerCase()`                        | 转小写                                      |
+|           | `contains(s)`                          | 是否包含子串                                   |
+|           | `startsWith(String s)`                 | 以某串开头                                    |
+|           | `endsWith(String s)`                   | 以某串结尾                                    |
+|           | `replace(char a,char b)`               | 用b替换所有a                                  |
+|           | `substring(int i)`                     | 截取i到结尾                                   |
+|           | `substring(int i,int j)`               | 截取 [i, j-1]                              |
+|           | `split(分隔符)`                           | 按分隔符切开，返回切开后的字符串数组                       |
+|           | `charAt(i)`                            | 获取索引 i 的字符                               |
+|           | `toCharArray()`                        | 字符串转换为字符数组                               |
+| `int`     | `indexOf(int ch)`                      | 返回指定字符**第一次**出现处的索引，未找到，返回 `-1`          |
+| `int`     | `indexOf(String str)`                  | 返回指定字符串**第一次**出现处的索引，未找到，返回 `-1`         |
+| `int`     | `indexOf(int ch, int fromIndex)`       | 返回从指定位置开始，指定字符**第一次**出现处的索引，未找到，返回 `-1`  |
+| `int`     | `lastIndexOf(int ch)`                  | 返回指定字符**最后一次**出现处的索引，未找到，返回 `-1`         |
+| `int`     | `lastIndexOf(String str)`              | 返回指定字符串**最后一次**出现处的索引，未找到，返回 `-1`        |
+| `int`     | `lastIndexOf(int ch, int fromIndex)`   | 返回从指定位置开始，指定字符**最后一次**出现处的索引，未找到，返回 `-1` |
+| `boolean` | `isEmpty()`                            |                                          |
+| `boolean` | equalsIgnoreCase(String anotherString) | 忽略大小写比较相等                                |
 
 ### equals vs ==（面试必考）
 
@@ -79,7 +87,7 @@ public class StringDemo {
 - **结论：字符串比较永远用 `equals`，不要用 `==
 
 ---
-
+# StringBuffer
 # StringBuilder
 
 StringBuilder —— 可变的字符串
@@ -137,3 +145,11 @@ public class StringBuilderDemo {
 | `setLength(0)`                | 清空                          |
 
 ---
+ 
+ 
+ `String`、`StringBuffer` 和 `StringBuilder` 的区别。
+
+① `String` 是不可变字符串，每次修改都会创建新对象，适用于少量操作。  
+② `StringBuffer` 是可变的，线程安全（方法用 `synchronized` 修饰），适用于多线程环境。  
+③ `StringBuilder` 也是可变的，但线程不安全（无同步），效率高于 `StringBuffer`，适用于单线程大量字符串操作。  
+④ 性能对比：`StringBuilder` > `StringBuffer` > `String`（频繁修改时）。
