@@ -19,4 +19,3 @@ public class Person {
         System.out.println("我叫" + name + "，今年" + age + "岁");
     }
 }
-// 第四课核心代码
