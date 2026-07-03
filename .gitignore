@@ -1,0 +1,15 @@
+# Java 编译产物
+*.class
+*.jar
+*.war
+target/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# 临时文件
+*~
+*.swp
+*.swo
