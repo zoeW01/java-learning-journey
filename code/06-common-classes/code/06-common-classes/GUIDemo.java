@@ -13,15 +13,15 @@ public class GUIDemo{
 }
 
 class APP{
-//	GameJFrame gameJFrame = new GameJFrame();
-	LoginJFrame loginJFrame = new LoginJFrame();
+	GameJFrame gameJFrame = new GameJFrame();
+//	LoginJFrame loginJFrame = new LoginJFrame();
 //	RegisterJFrame registerJFrame = new RegisterJFrame();
 }
 
 class GameJFrame extends JFrame implements ActionListener{
 	private final double scale = 1.0;
 	//C:\Users\LENOVO\Pictures\Screenshots\素材\animal\animal3
-	private String[] paths = {"/mnt/c/Users/LENOVO/Pictures/Screenshots/素材/animal/animal","/mnt/c/Users/LENOVO/Pictures/Screenshots/素材/girl/girl","/mnt/c/Users/LENOVO/Pictures/Screenshots/素材/sport/sport"};
+	private String[] paths = {"/mnt/c/Users/LENOVO/Pictures/Screenshots/素材/animal/animal","/mnt/c/Users/LENOVO/Pictures/Screenshots/素材/animal/girl/girl","/mnt/c/Users/LENOVO/Pictures/Screenshots/素材/sport/sport"};
 	private int choice = 0;
 	private int num = 1;
 	private String path = paths[choice] + num +"/";
@@ -63,7 +63,7 @@ class GameJFrame extends JFrame implements ActionListener{
 	}
 
 	private void initJFrame(){
- 		this.setSize((int)(663*scale),(int)(740*scale));
+ 		this.setSize((int)(653*scale),(int)(730*scale));
 		this.setTitle("Puzzle Game 1.0");
 		this.setAlwaysOnTop(true);
 		this.setLocationRelativeTo(null);
@@ -84,7 +84,7 @@ class GameJFrame extends JFrame implements ActionListener{
 					GameJFrame.this.getContentPane().add(backgroundLabel);
 
 					GameJFrame.this.getContentPane().repaint();
-  				}
+				}
 			}
 
 			public void keyReleased(KeyEvent e){
@@ -366,175 +366,15 @@ class GameJFrame extends JFrame implements ActionListener{
 	}
 }
 
-class LoginJFrame extends JFrame implements MouseListener{
-	private String username1 = "张三";
-	private String password1 = "123465789";
-
-	private String username2 = "李四";
-	private String password2 = "444444444";
-
-	private String rightCode = "";
-
-	private JTextField usernameText = new JTextField();
-	private	JPasswordField passwordText = new JPasswordField();
-	private	JTextField codeText = new JTextField();
-	private	JLabel code = new JLabel(getCode());
-	private JButton login  = new JButton();
-	private JButton register = new JButton();
-
-
+class LoginJFrame extends JFrame{
 	public LoginJFrame(){
-		initLoginJFrame();
-
-		initView();
-
+		this.setSize(488,430);
+		this.setTitle("Puzzle Login");
+		this.setAlwaysOnTop(true);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
-
-	private void initLoginJFrame(){
-		this.setSize(548,490);
-		this.setTitle("Puzzle Login"); 
-		this.setAlwaysOnTop(true); 
-		this.setLocationRelativeTo(null); 
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-		this.setLayout(null);
-	}
-
-	private void initView(){
-		this.getContentPane().removeAll();
-
-		JLabel usernameImage = new JLabel(new ImageIcon("/mnt/c/Users/LENOVO/Pictures/Screenshots/素材/login/用户名.png"));
-		usernameImage.setBounds(60,140,80,30);
-//		JTextField usernameText = new JTextField();
-		usernameText.setBounds(160,140,200,30);
-
-		JLabel passwordImage = new JLabel(new ImageIcon("/mnt/c/Users/LENOVO/Pictures/Screenshots/素材/login/密码.png"));
-		passwordImage.setBounds(60,190,80,30);
-//		JPasswordField passwordText = new JPasswordField();
-		passwordText.setBounds(160,190,200,30);
-
-		JLabel codeImage = new JLabel(new ImageIcon("/mnt/c/Users/LENOVO/Pictures/Screenshots/素材/login/验证码.png"));
-		codeImage.setBounds(60,240,80,30);
-//		JTextField codeText = new JTextField();
-		codeText.setBounds(165,240,160,30);
-
-//		JLabel code = new JLabel(getCode());
-		code.setBounds(350,240,80,30);
-
-		code.addMouseListener(this);
-
-//		JButton login  = new JButton();
-		login.setIcon(new ImageIcon("/mnt/c/Users/LENOVO/Pictures/Screenshots/素材/login/登录按钮.png"));
-		login.setBounds(80,300,128,47);
-		login.setBorderPainted(false);
-		login.setContentAreaFilled(false);
-
-		login.addMouseListener(this);
-
-//		JButton register = new JButton();
-		register.setBounds(288,300,128,47);
-		register.setIcon(new ImageIcon("/mnt/c/Users/LENOVO/Pictures/Screenshots/素材/login/注册按钮.png"));
-		register.setBorderPainted(false);
-		register.setContentAreaFilled(false);
-
-		register.addMouseListener(this);
-
-		JLabel background = new JLabel(new ImageIcon("/mnt/c/Users/LENOVO/Pictures/Screenshots/素材/login/background.png"));
-		background.setBounds(0,0,470,390);
-
-		this.getContentPane().add(usernameImage);
-		this.getContentPane().add(usernameText);
-		this.getContentPane().add(passwordImage);
-		this.getContentPane().add(passwordText);
-		this.getContentPane().add(codeImage);
-		this.getContentPane().add(codeText);
-		this.getContentPane().add(code);
-		this.getContentPane().add(login);
-		this.getContentPane().add(register);
-		this.getContentPane().add(background);
-
-		this.getContentPane().repaint();
-	}
-
-	private void initDialog(String s){
-		JDialog d = new JDialog();
-
-		d.setSize(300,250);
-		d.setAlwaysOnTop(true);
-		d.setLocationRelativeTo(null);
-		d.setModal(true);
-
-		JLabel warning = new JLabel(s);
-		warning.setBounds(0,0,300,250);
-		d.getContentPane().add(warning);
-
-		d.setVisible(true);
-
-	}
-
-	private String getCode(){
-		Random r= new Random();
-		String code = "";
-		for(int i=0;i<4;i++){
-			code += r.nextInt(10);
-		}
-		rightCode = code;
-
-		return code;
-	}
-
-	public void mouseClicked(MouseEvent e){
-		Object obj = e.getSource();
-		if(obj == code){
-			code.setText(getCode());
-		}
-	}
-
-	public void mousePressed(MouseEvent e){
-		Object obj = e.getSource();
-		if(obj == login){
-			login.setIcon(new ImageIcon("/mnt/c/Users/LENOVO/Pictures/Screenshots/素材/login/登录按下.png"));
-		}else if(obj == register){
-			register.setIcon(new ImageIcon("/mnt/c/Users/LENOVO/Pictures/Screenshots/素材/login/注册按下.png"));
-		}
-	}
-
-	public void mouseReleased(MouseEvent e){
-		Object obj = e.getSource();
-		if(obj == login){
-			login.setIcon(new ImageIcon("/mnt/c/Users/LENOVO/Pictures/Screenshots/素材/login/登录按钮.png"));
-
-			if(!rightCode.equals(codeText.getText())){
-				initDialog("验证码错误，请重新输入");
-
-				codeText.setText("");
-				code.setText(getCode());
-			}else if(!username1.equals(usernameText.getText()) && !username2.equals(usernameText.getText())){
-				initDialog("用户名错误，请重新输入");
-
-				usernameText.setText("");
-			}else if((!(password1.equals(passwordText.getText()))) && (!(password2.equals(passwordText.getText())))){
-				initDialog("密码错误，请重新输入");
-
-				passwordText.setText("");
-			}else {
-				this.setVisible(false);
-
-				new GameJFrame();
-			}
-		}else if(obj == register){
-			register.setIcon(new ImageIcon("/mnt/c/Users/LENOVO/Pictures/Screenshots/素材/login/注册按钮.png"));
-		}
-	}
-
-	public void mouseEntered(MouseEvent e){
-
-	}
-
-	public void mouseExited(MouseEvent e){
-
-	}
-
 }
 
 class RegisterJFrame extends JFrame{
