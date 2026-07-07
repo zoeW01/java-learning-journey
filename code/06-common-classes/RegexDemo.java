@@ -1,10 +1,13 @@
 import java.util.Scanner;
+import java.util.regex.*;
 
 public class RegexDemo{
 	private static Scanner sc = new Scanner(System.in);
 	public static void main(String[] args){
-		while(true){ 
-			System.out.println("输入手机号校验"); 
+//		while(true){
+			System.out.println("输入文本");
+			extractEmails(sc.nextLine());
+/*			System.out.println("输入手机号校验"); 
 			System.out.println(phone(sc.next())); 
 			System.out.println("输入邮政编码校验"); 
 			System.out.println(zipCode(sc.next())); 
@@ -14,6 +17,16 @@ public class RegexDemo{
 			System.out.println(email(sc.next()));
 			System.out.println("输入日期格式校验");
 			System.out.println(date(sc.next()));
+*/
+//		}
+	}
+
+	public static void extractEmails(String text){
+		Pattern p = Pattern.compile("(\\w+)@([0-9a-zA-Z]+)\\.([a-zA-Z]{2,6})");
+		Matcher m = p.matcher(text);
+
+		while(m.find()){
+			System.out.println("用户名："+m.group(1)+"域名："+m.group(2)+"顶级域："+m.group(3));
 		}
 	}
 
