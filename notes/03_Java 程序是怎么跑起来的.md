@@ -3,7 +3,7 @@
 
 ### 一、源代码、编译、字节码
 
-你写的 `.java` 文件叫**源代码**。它是人类能读懂的文字，但计算机读不懂。
+写的 `.java` 文件叫**源代码**。它是人类能读懂的文字，但计算机读不懂。
 
 计算机只认识二进制指令。让计算机理解源代码，需要两步：
 
@@ -27,9 +27,19 @@ java Project
 
 你的代码写在 Windows 上能跑，放在 Linux 上也能跑，放在 Mac 上也能跑——因为 JVM 做了中间的翻译工作。每个操作系统有自己专用的 JVM，但所有 JVM 都能读懂同样的 `.class` 字节码。这就是 Java 的"一次编译，到处运行"。
 
+- **关键规则**：运行命令不带 `.class` 后缀
+
 ---
 
-### 二、JAR 包是什么
+### 二、JDK / JRE / JVM
+
+- **JDK**（Java Development Kit）：开发工具包，包含编译器（javac）和 JRE。用于**开发**。
+	- 编译器的任务是把`.java`文件变成`.class`文件（字节码）
+- **JRE**（Java Runtime Environment）：运行环境，包含 JVM 和核心类库。用于**运行**。
+	- JRE里没有编译器，只有运行环境。
+- **JVM**（Java Virtual Machine）：Java 虚拟机，真正执行字节码（.class文件）的东西。
+- **包含关系**：JDK ⊃ JRE ⊃ JVM
+### 三、JAR 包是什么
 
 你现在写的代码只有一个 `Project.java`，编译成一个 `Project.class`，很简单。
 
@@ -41,7 +51,7 @@ java Project
 
 ---
 
-### 三、Classpath：JVM 去哪里找类
+### 四、Classpath：JVM 去哪里找类
 
 这是最困惑的地方。重点讲。
 
@@ -89,7 +99,7 @@ java -cp .:mysql-connector-j-8.0.33.jar JdbcDemo
 
 ---
 
-### 四、用书架的比喻理解以上全部概念
+### 五、用书架的比喻理解以上全部概念
 
 假设你有一个书架：
 
@@ -102,7 +112,7 @@ java -cp .:mysql-connector-j-8.0.33.jar JdbcDemo
 
 ---
 
-### 五、Maven 和 Spring Boot 跟这些有什么关系——预告
+### 六、Maven 和 Spring Boot 跟这些有什么关系——预告
 
 你现在每一次运行 `javac` 和 `java` 都要手动加 `-cp`，还要手动下载 jar 包。项目大了以后，可能依赖几十个 jar 包，手动管理会疯掉。
 

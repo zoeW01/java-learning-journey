@@ -17,6 +17,7 @@ Object是所有 Java 类的根类。每个类都直接或间接继承 Object。
 | `Class<?>`         | `getClass()`                    | 返回此对象的运行时类（`Class` 对象）。                                                          |
 |                    | `registerNatives()`             | 这是一个 `private static native` 方法，用于在类加载时注册本地方法。**开发者永远不需要关心或调用这个方法**，它由 JVM 内部使用。 |
 
+`finalize()` 已废弃，对象被 GC 回收前调用，但不保证一定会执行。
 
 # Objects类（`java.util`）
 
