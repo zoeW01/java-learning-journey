@@ -5,9 +5,10 @@ public class RegexDemo{
 	private static Scanner sc = new Scanner(System.in);
 	public static void main(String[] args){
 //		while(true){
-			System.out.println("输入文本");
-			extractEmails(sc.nextLine());
-/*			System.out.println("输入手机号校验"); 
+			System.out.println();
+			paresURL(sc.nextLine());
+/*			formatDates(sc.nextLine());
+			System.out.println("输入手机号校验"); 
 			System.out.println(phone(sc.next())); 
 			System.out.println("输入邮政编码校验"); 
 			System.out.println(zipCode(sc.next())); 
@@ -19,6 +20,42 @@ public class RegexDemo{
 			System.out.println(date(sc.next()));
 */
 //		}
+	}
+
+	public static void paresURL(String url){
+		String regex = "(http[s]?)://([^/]+)";
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(url);
+
+		while(m.find()){
+			System.out.println("协议：" + m.group(1)+"域名："+m.group(2));
+		}
+	}
+
+	public static boolean isValidUsername(String name){
+		return name.matches("[a-zA-Z]\\w{3,15}");
+	}
+
+	public static void formatDates(String text){
+		String regex = "(\\d{4})-(\\d{2})-(\\d{2})";
+		String result = text.replaceAll(regex,"$1年$2月$3日");
+		System.out.println(result);
+	}
+
+	public static boolean isValidId(String id){
+		String regex = "\\d{17}(\\d|x|X)";
+		return id.matches(regex);
+	}
+
+	public static void extractPhones(String text){
+		String regex = "1[3-9]\\d{9}";
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(text);
+
+		while(m.find()){
+			System.out.println(m.group());
+		}
+
 	}
 
 	public static void extractEmails(String text){
